@@ -37,6 +37,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -44,7 +45,6 @@ body {
     color: #E5EAF3;
     line-height: 1.6;
     background: var(--color-dark);
-    overflow-x: hidden;
 }
 
 img {
@@ -71,10 +71,11 @@ a {
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
     z-index: 100;
     padding: 1rem 0;
     background: rgba(255, 255, 255, 0);
-    transition: var(--transition);
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar.scrolled {
@@ -105,14 +106,15 @@ a {
 .nav-logo .logo-dark { display: none; }
 .nav-logo .logo-light { display: block; }
 
-.nav-menu {
+/* Navegación de escritorio */
+.nav-desktop {
     display: flex;
     gap: 2rem;
     list-style: none;
     align-items: center;
 }
 
-.nav-menu a {
+.nav-desktop a {
     color: var(--color-white);
     font-weight: 500;
     font-size: 1.15rem;
@@ -120,32 +122,35 @@ a {
     position: relative;
 }
 
-.navbar.scrolled .nav-menu a {
-    color: var(--color-white);
-}
-
-.nav-menu a:not(.nav-cta)::after {
+.nav-desktop a:not(.nav-cta)::after {
     content: '';
     position: absolute;
     bottom: -4px;
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     transition: var(--transition);
 }
 
-.nav-menu a:not(.nav-cta):hover::after {
+.nav-desktop a:not(.nav-cta):hover::after {
     width: 100%;
 }
 
+/* Panel lateral móvil — oculto en escritorio */
+.nav-menu,
+.nav-backdrop {
+    display: none;
+}
+
 .nav-cta {
-    background: var(--gradient-brand-h);
-    color: var(--color-white) !important;
+    background: var(--color-cian);
+    color: var(--color-dark) !important;
     padding: 0.7rem 1.6rem;
     border-radius: 50px;
     transition: var(--transition);
     font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .nav-cta:hover {
@@ -351,7 +356,7 @@ section {
 .divider {
     width: 60px;
     height: 4px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     margin: 0 auto 1.5rem;
     border-radius: 2px;
 }
@@ -408,7 +413,7 @@ section {
     left: -20px;
     right: 20px;
     bottom: 20px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     border-radius: var(--radius-lg);
     z-index: -1;
     opacity: 0.3;
@@ -446,7 +451,7 @@ section {
     top: 1.1rem;
     width: 16px;
     height: 16px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     border-radius: 50%;
 }
 
@@ -488,12 +493,12 @@ section {
     width: 64px;
     height: 64px;
     border-radius: 16px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 1.5rem;
-    color: var(--color-white);
+    color: var(--color-dark);
 }
 
 .service-icon svg {
@@ -549,7 +554,7 @@ section {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     opacity: 0;
     transition: var(--transition);
 }
@@ -968,29 +973,205 @@ section {
 @media (max-width: 768px) {
     .nav-toggle {
         display: flex;
+        position: relative;
+        z-index: 110;
     }
 
+    /* Hamburger → X cuando está activo */
+    .nav-toggle.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .nav-toggle.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Ocultar nav de escritorio */
+    .nav-desktop {
+        display: none;
+    }
+
+    /* Panel lateral deslizante */
     .nav-menu {
+        display: flex;
         position: fixed;
-        top: 110px;
-        left: 0;
+        top: 0;
         right: 0;
-        background: rgba(11, 20, 38, 0.97);
-        backdrop-filter: blur(14px);
+        bottom: 0;
+        width: min(85vw, 360px);
+        background: rgba(11, 20, 38, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         flex-direction: column;
-        padding: 2rem;
-        gap: 1.5rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        transform: translateY(-150%);
-        transition: var(--transition);
+        align-items: stretch;
+        padding: 2rem 1.5rem;
+        gap: 0;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 105;
+        overflow-y: auto;
     }
 
     .nav-menu.active {
-        transform: translateY(0);
+        transform: translateX(0);
     }
 
-    .nav-menu a {
+    /* Backdrop */
+    .nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 100;
+    }
+
+    .nav-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Logo a la izquierda + botón de cerrar a la derecha */
+    .nav-menu-header {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 0.75rem;
+    }
+
+    .nav-menu-logo {
+        height: 75px;
+        width: auto;
+    }
+
+    .nav-menu-close {
+        background: none;
+        border: none;
         color: var(--color-white);
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: var(--transition);
+        flex-shrink: 0;
+        position: absolute;
+        top: 0.75rem;
+        right: 1rem;
+    }
+
+    .nav-menu-close svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .nav-menu-close:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--color-cian);
+    }
+
+    /* Lista de navegación */
+    .nav-list {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        list-style: none;
+        gap: 0.5rem;
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-list li {
+        width: 100%;
+        list-style: none;
+    }
+
+    .nav-list a {
+        display: block;
+        padding: 0.7rem 1.2rem;
+        border-radius: 12px;
+        color: var(--color-white);
+        font-size: 1.1rem;
+        transition: var(--transition);
+    }
+
+    .nav-list a:hover,
+    .nav-list a:focus {
+        background: rgba(134, 226, 242, 0.1);
+        color: var(--color-cian);
+    }
+
+    /* Quitar el underline en mobile (no aplica al estilo lista) */
+    .nav-list a:not(.nav-cta)::after {
+        display: none;
+    }
+
+    .nav-list .nav-cta {
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+
+    /* Iconos sociales abajo */
+    .nav-menu-socials {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding-top: 1.25rem;
+        margin-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .social-btn {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-white);
+        transition: var(--transition);
+    }
+
+    .social-btn svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .social-btn:hover {
+        background: var(--color-cian);
+        color: var(--color-dark);
+        border-color: var(--color-cian);
+        transform: translateY(-2px);
+    }
+
+    .social-btn-whatsapp:hover {
+        background: #25D366;
+        border-color: #25D366;
+        color: var(--color-white);
+    }
+
+    /* Bloquear scroll del body cuando el menú está abierto (compatible iOS) */
+    body.menu-open {
+        position: fixed;
+        width: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+    }
+
+    html.menu-open {
+        overflow: hidden;
+        overscroll-behavior: none;
     }
 
     .hero-buttons {
@@ -1015,7 +1196,6 @@ section {
 
 @media (max-width: 480px) {
     .nav-logo img { height: 80px; }
-    .nav-menu { top: 90px !important; }
     .hero-logo { max-height: 180px; }
     section { padding: 3rem 0; }
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }

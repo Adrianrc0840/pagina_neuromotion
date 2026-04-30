@@ -16,19 +16,57 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', handleScroll);
     handleScroll();
 
-    // ====== Mobile menu toggle ======
+    // ====== Mobile menu toggle (panel lateral) ======
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
+    const navBackdrop = document.querySelector('.nav-backdrop');
+
+    let lockedScrollY = 0;
+
+    const openMenu = () => {
+        lockedScrollY = window.scrollY;
+        navMenu.classList.add('active');
+        navBackdrop.classList.add('active');
+        navToggle.classList.add('active');
+        document.documentElement.classList.add('menu-open');
+        document.body.classList.add('menu-open');
+        document.body.style.top = `-${lockedScrollY}px`;
+        navToggle.setAttribute('aria-label', 'Cerrar menú');
+    };
+
+    const closeMenu = () => {
+        navMenu.classList.remove('active');
+        navBackdrop.classList.remove('active');
+        navToggle.classList.remove('active');
+        document.documentElement.classList.remove('menu-open');
+        document.body.classList.remove('menu-open');
+        document.body.style.top = '';
+        window.scrollTo(0, lockedScrollY);
+        navToggle.setAttribute('aria-label', 'Abrir menú');
+    };
 
     navToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
+        if (navMenu.classList.contains('active')) closeMenu();
+        else openMenu();
     });
 
-    // Close mobile menu on link click
+    if (navBackdrop) {
+        navBackdrop.addEventListener('click', closeMenu);
+    }
+
+    const navMenuClose = document.querySelector('.nav-menu-close');
+    if (navMenuClose) {
+        navMenuClose.addEventListener('click', closeMenu);
+    }
+
+    // Cerrar al hacer click en cualquier link del menú
     document.querySelectorAll('.nav-menu a').forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-        });
+        link.addEventListener('click', closeMenu);
+    });
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) closeMenu();
     });
 
     // ====== Smooth scroll offset for fixed navbar ======
