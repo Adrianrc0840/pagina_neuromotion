@@ -98,7 +98,7 @@ a {
 }
 
 .nav-logo img {
-    height: 72px;
+    height: 110px;
     transition: var(--transition);
 }
 
@@ -115,7 +115,7 @@ a {
 .nav-menu a {
     color: var(--color-white);
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     transition: var(--transition);
     position: relative;
 }
@@ -142,9 +142,10 @@ a {
 .nav-cta {
     background: var(--gradient-brand-h);
     color: var(--color-white) !important;
-    padding: 0.6rem 1.4rem;
+    padding: 0.7rem 1.6rem;
     border-radius: 50px;
     transition: var(--transition);
+    font-size: 1.1rem;
 }
 
 .nav-cta:hover {
@@ -468,6 +469,10 @@ section {
     transition: var(--transition);
     border: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .service-card:hover {
@@ -820,7 +825,7 @@ section {
 
     .nav-menu {
         position: fixed;
-        top: 90px;
+        top: 110px;
         left: 0;
         right: 0;
         background: rgba(11, 20, 38, 0.97);
@@ -862,7 +867,9 @@ section {
 }
 
 @media (max-width: 480px) {
-    .hero-logo { height: 90px; }
+    .nav-logo img { height: 80px; }
+    .nav-menu { top: 90px !important; }
+    .hero-logo { height: 220px; width: 220px; }
     section { padding: 3rem 0; }
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     .logo-item { width: 150px; height: 150px; }
