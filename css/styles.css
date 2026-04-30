@@ -667,58 +667,181 @@ section {
 .contact .section-header h2 { color: #0B1426; }
 .contact .section-subtitle { color: var(--color-gray); }
 
-.contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.contact-card {
-    background: var(--color-white);
-    padding: 2.5rem 1.5rem;
-    border-radius: var(--radius-lg);
+/* Banner de contacto */
+.contact-banner {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 5rem 2rem;
     text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition);
-    display: block;
-    border: 1px solid var(--color-border);
-}
-
-.contact-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
-    border-color: rgba(134, 226, 242, 0.6);
-}
-
-.contact-icon {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 1.2rem;
-    border-radius: 50%;
-    background: var(--gradient-brand-h);
+    color: var(--color-white);
+    margin-bottom: 4rem;
+    min-height: 460px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.contact-banner-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.contact-banner-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contact-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(135deg, rgba(11, 20, 38, 0.92) 0%, rgba(20, 33, 61, 0.85) 100%),
+        radial-gradient(circle at 70% 30%, rgba(134, 226, 242, 0.18) 0%, transparent 50%);
+    z-index: 1;
+}
+
+.contact-banner-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    width: 100%;
+}
+
+.contact-banner h3 {
+    font-size: clamp(1.75rem, 3.8vw, 2.6rem);
+    margin-bottom: 1rem;
+    color: var(--color-white);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.contact-banner > .contact-banner-content > p {
+    font-size: 1.15rem;
+    margin-bottom: 2.2rem;
+    opacity: 0.9;
     color: var(--color-white);
 }
 
-.contact-icon svg {
-    width: 28px;
-    height: 28px;
-}
-
-.contact-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.4rem;
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: #25D366;
+    color: var(--color-white);
+    padding: 1.1rem 2.5rem;
+    border-radius: 50px;
     font-weight: 600;
-    color: #0B1426;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 12px 30px rgba(37, 211, 102, 0.45);
+    border: 2px solid transparent;
 }
 
-.contact-card p {
+.btn-whatsapp:hover {
+    transform: translateY(-3px);
+    background: #1FB855;
+    box-shadow: 0 16px 40px rgba(37, 211, 102, 0.55);
+}
+
+.btn-whatsapp svg {
+    width: 24px;
+    height: 24px;
+}
+
+.contact-secondary {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2.2rem;
+    flex-wrap: wrap;
+}
+
+.contact-secondary a {
+    color: var(--color-white);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    opacity: 0.85;
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+.contact-secondary a:hover {
+    opacity: 1;
+    color: var(--color-cian);
+}
+
+.contact-secondary svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Zonas de cobertura */
+.coverage {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.coverage h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: #0B1426;
+    font-weight: 600;
+}
+
+.coverage-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.chip {
+    padding: 0.65rem 1.4rem;
+    background: rgba(134, 226, 242, 0.12);
+    border: 1px solid rgba(134, 226, 242, 0.5);
+    border-radius: 50px;
+    color: #0B1426;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.chip:hover {
+    background: rgba(134, 226, 242, 0.25);
+    transform: translateY(-2px);
+}
+
+.coverage-note {
     color: var(--color-gray);
     font-size: 0.95rem;
+    font-style: italic;
+}
+
+@media (max-width: 600px) {
+    .contact-banner {
+        padding: 3.5rem 1.5rem;
+        min-height: 400px;
+    }
+
+    .contact-secondary {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .btn-whatsapp {
+        padding: 1rem 1.8rem;
+        font-size: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* ============================================
