@@ -131,7 +131,7 @@ a {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     transition: var(--transition);
 }
 
@@ -140,12 +140,13 @@ a {
 }
 
 .nav-cta {
-    background: var(--gradient-brand-h);
-    color: var(--color-white) !important;
+    background: var(--color-cian);
+    color: var(--color-dark) !important;
     padding: 0.7rem 1.6rem;
     border-radius: 50px;
     transition: var(--transition);
     font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .nav-cta:hover {
@@ -351,7 +352,7 @@ section {
 .divider {
     width: 60px;
     height: 4px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     margin: 0 auto 1.5rem;
     border-radius: 2px;
 }
@@ -408,7 +409,7 @@ section {
     left: -20px;
     right: 20px;
     bottom: 20px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     border-radius: var(--radius-lg);
     z-index: -1;
     opacity: 0.3;
@@ -446,7 +447,7 @@ section {
     top: 1.1rem;
     width: 16px;
     height: 16px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     border-radius: 50%;
 }
 
@@ -488,12 +489,12 @@ section {
     width: 64px;
     height: 64px;
     border-radius: 16px;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 1.5rem;
-    color: var(--color-white);
+    color: var(--color-dark);
 }
 
 .service-icon svg {
@@ -549,7 +550,7 @@ section {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--gradient-brand-h);
+    background: var(--color-cian);
     opacity: 0;
     transition: var(--transition);
 }
