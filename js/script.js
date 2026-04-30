@@ -120,4 +120,90 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'ArrowRight') showImage(currentIndex + 1);
     });
 
+    // ====== Logos carousel: drag (mouse + touch nativo) + auto-scroll ======
+    const carousel = document.querySelector('.logos-carousel');
+    const track = document.querySelector('.logos-track');
+
+    if (carousel && track) {
+        // Clonar items hasta que el track tenga al menos 4x el ancho del viewport
+        const originalItems = Array.from(track.children);
+        const ensureWidth = () => {
+            const target = window.innerWidth * 4;
+            while (track.scrollWidth < target) {
+                originalItems.forEach(item => track.appendChild(item.cloneNode(true)));
+            }
+        };
+        ensureWidth();
+        window.addEventListener('resize', ensureWidth);
+
+        // Auto-scroll continuo
+        let autoScroll = true;
+        const speed = 0.5; // px por frame (~30px/s a 60fps)
+        let resumeTimer;
+        let accumulated = 0;
+
+        const tick = () => {
+            if (autoScroll && !isDragging) {
+                accumulated += speed;
+                if (accumulated >= 1) {
+                    const step = Math.floor(accumulated);
+                    carousel.scrollLeft += step;
+                    accumulated -= step;
+                }
+                // Loop: cuando pasamos la mitad del track, regresamos sin que se note
+                const loopPoint = track.scrollWidth / 2;
+                if (carousel.scrollLeft >= loopPoint) {
+                    carousel.scrollLeft -= loopPoint;
+                }
+            }
+            requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+
+        const pauseAuto = () => {
+            autoScroll = false;
+            clearTimeout(resumeTimer);
+        };
+        const resumeAutoSoon = (ms = 1500) => {
+            clearTimeout(resumeTimer);
+            resumeTimer = setTimeout(() => { autoScroll = true; }, ms);
+        };
+
+        carousel.addEventListener('mouseenter', pauseAuto);
+        carousel.addEventListener('mouseleave', () => { autoScroll = true; });
+
+        // Touch nativo en móvil (overflow-x:auto ya da swipe)
+        carousel.addEventListener('touchstart', pauseAuto, { passive: true });
+        carousel.addEventListener('touchend', () => resumeAutoSoon(2000), { passive: true });
+
+        // Drag con mouse en escritorio
+        let isDragging = false;
+        let startX = 0;
+        let startScroll = 0;
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            carousel.classList.add('dragging');
+            startX = e.pageX;
+            startScroll = carousel.scrollLeft;
+            pauseAuto();
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.pageX - startX;
+            carousel.scrollLeft = startScroll - dx;
+        });
+
+        const endDrag = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            carousel.classList.remove('dragging');
+            resumeAutoSoon(1500);
+        };
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('mouseleave', endDrag);
+    }
+
 });
